@@ -1,0 +1,19 @@
+dev:
+  build: ./app
+  ports:
+    - "9000:80"
+  volumes:
+    - ./app/src:/var/www/html
+    - ./app/supervisor:/etc/supervisor/conf.d
+  links:
+    - db
+db:
+  image: mysql:latest
+  ports:
+    - "3306:3306"
+  volumes:
+    - ./data/mysql/conf.d:/etc/mysql/conf.d:rw
+    - ./data/mysql/data:/var/lib/mysql:rw
+  environment:
+    MYSQL_ROOT_PASSWORD: "somepassword"
+  entrypoint: /database/run.sh
